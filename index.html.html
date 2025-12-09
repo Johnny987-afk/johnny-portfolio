@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Johnny Ju – Game Backlog Case Study</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: radial-gradient(circle at top, #182341 0, #050814 55%, #02030a 100%);
+      color: #f5f5f5;
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    header {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(
+        to bottom,
+        rgba(5, 8, 20, 0.96),
+        rgba(5, 8, 20, 0.9),
+        transparent
+      );
+    }
+
+    .nav-inner {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .logo {
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      color: #c5d3ff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
+
+    .nav-links a {
+      padding-bottom: 2px;
+      border-bottom: 1px solid transparent;
+    }
+
+    .nav-links a:hover {
+      border-bottom-color: rgba(197, 211, 255, 0.7);
+    }
+
+    main {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.2fr);
+      gap: 32px;
+      align-items: center;
+      padding: 32px 24px;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: radial-gradient(circle at top left, #1e2848, #050814 60%);
+      box-shadow: 0 26px 60px rgba(0, 0, 0, 0.7);
+      margin-bottom: 40px;
+    }
+
+    .hero-kicker {
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #8fa2ff;
+      margin-bottom: 8px;
+    }
+
+    .hero-title {
+      font-size: clamp(2.4rem, 4vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+      color: #ccd3ff;
+      margin-bottom: 18px;
+      max-width: 30rem;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 0.8rem;
+      margin-bottom: 4px;
+    }
+
+    .pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(2, 6, 23, 0.9);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #60a5fa;
+    }
+
+    .hero-note {
+      font-size: 0.8rem;
+      color: #9ba2c8;
+      margin-top: 8px;
+    }
+
+    .hero-preview {
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 16px 16px 18px;
+      background: radial-gradient(circle at top, #111827, #020617);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .preview-tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      color: #9ca3af;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .preview-card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .preview-card {
+      border-radius: 12px;
+      padding: 8px;
+      background: linear-gradient(145deg, #0b1220, #020617);
+      border: 1px solid rgba(148, 163, 255, 0.3);
+      min-height: 70px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .preview-card-title {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #e5e7eb;
+      margin-bottom: 4px;
+    }
+
+    .preview-card-meta {
+      font-size: 0.7rem;
+      color: #9ca3af;
+    }
+
+    .preview-hint {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-top: 4px;
+    }
+
+    section {
+      margin-bottom: 40px;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #9ca3ff;
+      margin-bottom: 6px;
+    }
+
+    h2.section-title {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .section-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2.5fr) minmax(0, 2fr);
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .section-body p {
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+      color: #e5e7eb;
+    }
+
+    ul {
+      list-style: none;
+      margin-left: 0;
+      margin-top: 4px;
+    }
+
+    li {
+      font-size: 0.92rem;
+      color: #e5e7eb;
+      margin-bottom: 4px;
+      position: relative;
+      padding-left: 14px;
+    }
+
+    li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: #60a5fa;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(156, 163, 175, 0.6);
+      color: #d1d5db;
+    }
+
+    .card {
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: radial-gradient(circle at top left, #111827, #020617 60%);
+      padding: 16px 16px 18px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.65);
+      font-size: 0.9rem;
+      color: #d1d5db;
+    }
+
+    .card-title {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #9ca3ff;
+      margin-bottom: 8px;
+    }
+
+    .mini-heading {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #9ca3ff;
+      margin-bottom: 6px;
+    }
+
+    .two-col-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 4px 18px;
+      margin-top: 4px;
+    }
+
+    .two-col-list span {
+      font-size: 0.85rem;
+      color: #e5e7eb;
+    }
+
+    footer {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 0 20px 28px;
+      font-size: 0.75rem;
+      color: #6b7280;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      border-top: 1px solid rgba(31, 41, 55, 0.9);
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .section-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .nav-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-inner">
+      <div class="logo">JOHNNY JU · UX</div>
+      <nav class="nav-links">
+        <a href="#about">About</a>
+        <a href="#problem">Problem</a>
+        <a href="#methods">Methods</a>
+        <a href="#insights">Insights</a>
+        <a href="#design">Design</a>
+        <a href="#reflection">Next</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div>
+        <div class="hero-kicker">Case Study · Game UX Research</div>
+        <h1 class="hero-title">Why Young People Buy Games but Don’t Play Them</h1>
+        <p class="hero-subtitle">
+          A look at backlogs, FOMO, time, and identity – and a design response called
+          <strong>Backlog Buddy</strong>.
+        </p>
+        <div class="hero-meta">
+          <div class="pill">
+            <span class="pill-dot"></span>
+            <span>Role: UX Research &amp; Concept</span>
+          </div>
+          <div class="pill">
+            <span class="pill-dot"></span>
+            <span>Methods: Survey · Interviews · Forums</span>
+          </div>
+          <div class="pill">
+            <span class="pill-dot"></span>
+            <span>Focus: Game Libraries &amp; Backlog</span>
+          </div>
+        </div>
+        <p class="hero-note">
+          Designed &amp; presented by <strong>Johnny Ju</strong>.
+        </p>
+      </div>
+
+      <aside class="hero-preview">
+        <div class="preview-tag">Case at a glance</div>
+        <div class="preview-card-grid">
+          <div class="preview-card">
+            <div class="preview-card-title">Problem</div>
+            <div class="preview-card-meta">“Pile of shame” · unplayed games · backlog guilt.</div>
+          </div>
+          <div class="preview-card">
+            <div class="preview-card-title">Process</div>
+            <div class="preview-card-meta">Survey · 6 interviews · online communities.</div>
+          </div>
+          <div class="preview-card">
+            <div class="preview-card-title">Outcome</div>
+            <div class="preview-card-meta">Backlog Buddy concept: suggest · schedule · social play.</div>
+          </div>
+        </div>
+        <p class="preview-hint">
+          During the live presentation, I scroll through this page instead of slides and talk through each section.
+        </p>
+      </aside>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="section-label">01 · About me &amp; this case</div>
+      <h2 class="section-title">Designer &amp; gamer</h2>
+      <div class="section-grid">
+        <div class="section-body">
+          <p>
+            I’m <strong>Johnny Ju</strong>, a UX designer and researcher – and also a pretty typical gamer.
+            I’m interested in the messy, emotional side of gaming behavior: why we scroll libraries,
+            postpone “big” games, and sometimes choose YouTube over the titles we were once excited about.
+          </p>
+          <p>
+            In my work I like to combine <strong>human-centered research</strong> with
+            <strong>visual storytelling</strong>, turning personal habits into clear patterns and
+            design opportunities.
+          </p>
+          <p>
+            This case started from my own growing backlog and spread to friends and online communities –
+            which is why I decided to treat it as a UX problem, not just a personal flaw.
+          </p>
+        </div>
+        <aside class="card">
+          <div class="card-title">Snapshot</div>
+          <div class="two-col-list">
+            <span>Role: Researcher</span>
+            <span>Domain: Game UX</span>
+            <span>Focus: Backlogs</span>
+            <span>Scope: Exploratory</span>
+            <span>Audience: 16–25</span>
+            <span>Outcome: Concept</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- PROBLEM & QUESTIONS -->
+    <section id="problem">
+      <div class="section-label">02 · Problem &amp; questions</div>
+      <h2 class="section-title">From “pile of shame” to design question</h2>
+      <div class="section-grid">
+        <div class="section-body">
+          <p>
+            Many young gamers have a digital <strong>“pile of shame”</strong> – games they were excited
+            enough to buy, but never actually play. Libraries keep growing through sales, bundles, and
+            hype, while real time and energy stay limited.
+          </p>
+          <p>
+            Emotionally, this creates a mix of guilt, FOMO, and sometimes quiet pride in having a
+            “serious” library. I wanted to understand what sits underneath this behavior.
+          </p>
+          <p>That turned into a set of guiding questions:</p>
+          <ul>
+            <li>What drives young people to buy games they don’t end up playing?</li>
+            <li>What gets in the way of actually starting those games?</li>
+            <li>How do they feel about their backlogs emotionally?</li>
+            <li>Where can design help shift from “buy → ignore” to “buy → play”?</li>
+          </ul>
+        </div>
+        <aside class="card">
+          <div class="card-title">Quick view</div>
+          <p><strong>Problem</strong></p>
+          <p>Unplayed games, growing backlogs, and guilt around “wasted” purchases.</p>
+          <p style="margin-top:8px;"><strong>Design challenge</strong></p>
+          <p>
+            Support players in actually using what they already own, without shaming them for how they
+            got there.
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- METHODS -->
+    <section id="methods">
+      <div class="section-label">03 · Approach</div>
+      <h2 class="section-title">Survey · interviews · forums</h2>
+      <div class="section-grid">
+        <div class="section-body">
+          <p>
+            I mixed lightweight quantitative and qualitative methods to understand both scale and stories.
+          </p>
+          <ul>
+            <li><strong>Survey (~50 gamers, 16–25)</strong> – library size, unplayed rate, top reasons for not playing.</li>
+            <li><strong>6 in-depth interviews</strong> – purchase stories, how people plan to play, what actually happens, and how they feel about backlog games.</li>
+            <li><strong>Online observation</strong> – forum threads and posts about Steam sales, “game hoarding,” and backlog guilt.</li>
+          </ul>
+          <p>
+            Together, these showed that my personal pattern wasn’t unique – it was a fairly
+            normal part of modern digital game ownership.
+          </p>
+        </div>
+        <aside class="card">
+          <div class="mini-heading">Method highlights</div>
+          <div class="badge-row">
+            <span class="badge">Survey · Interviews · Forums</span>
+            <span class="badge">Gamers 16–25</span>
+            <span class="badge">Backlog size</span>
+            <span class="badge">Reasons</span>
+            <span class="badge">Emotions</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- INSIGHTS -->
+    <section id="insights">
+      <div class="section-label">04 · Key insights</div>
+      <h2 class="section-title">Why we buy, why we don’t play</h2>
+      <div class="section-grid">
+        <div class="section-body">
+          <p><strong>Insight 1 – FOMO &amp; sales</strong></p>
+          <p>
+            Deep discounts, bundles, and “limited time” offers create strong FOMO. Many purchases are
+            driven by the deal and the fantasy of “future me will definitely want this,” not by a real plan
+            to play soon.
+          </p>
+
+          <p style="margin-top:10px;"><strong>Insight 2 – Time &amp; heaviness</strong></p>
+          <p>
+            Big games demand serious time and mental energy. Students and young adults overestimate
+            their free time and keep waiting for a “perfect moment” that rarely arrives, so games remain
+            unlaunched even when they still care about them.
+          </p>
+
+          <p style="margin-top:10px;"><strong>Insight 3 – Social hype</strong></p>
+          <p>
+            Friends and streamers strongly influence purchases. Buying a game is a way to feel included
+            in a conversation. But if the timing or fit isn’t right, the social energy fades before people
+            ever start playing.
+          </p>
+
+          <p style="margin-top:10px;"><strong>Insight 4 – Collecting &amp; identity</strong></p>
+          <p>
+            For some players, owning games is its own hobby. A big library feels like part of their
+            identity as “a real gamer.” Buying gives a quick dopamine hit and a sense of future possibility –
+            even if they know they may not play everything.
+          </p>
+        </div>
+        <aside class="card">
+          <div class="mini-heading">Insight tags</div>
+          <div class="badge-row">
+            <span class="badge">FOMO</span>
+            <span class="badge">Sales &amp; deals</span>
+            <span class="badge">Time pressure</span>
+            <span class="badge">Heavy games</span>
+            <span class="badge">Social hype</span>
+            <span class="badge">Library pride</span>
+          </div>
+          <p style="margin-top:10px;font-size:0.9rem;">
+            The behavior looks irrational from the outside, but makes emotional sense when you consider
+            identity, social belonging, and limited time.
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- DESIGN RESPONSE -->
+    <section id="design">
+      <div class="section-label">05 · Design response</div>
+      <h2 class="section-title">Backlog Buddy: suggest · schedule · social</h2>
+      <div class="section-grid">
+        <div class="section-body">
+          <p>
+            Instead of trying to stop people from buying games, I focused on closing the gap between
+            <strong>owning</strong> and <strong>playing</strong>.
+          </p>
+          <p>
+            I explored several directions and converged on a concept called <strong>Backlog Buddy</strong> – a
+            companion feature that connects to your existing libraries and helps you decide what to play
+            next from what you already own.
+          </p>
+          <ul>
+            <li><strong>Suggest</strong> – a “Play Next” suggestion that surfaces one unplayed game so you don’t drown in choices.</li>
+            <li><strong>Schedule</strong> – the option to block a small session for that game and get a reminder when it’s time.</li>
+            <li><strong>Social</strong> – see which friends also own it and invite them to tackle a backlog game together.</li>
+            <li><strong>Challenge &amp; progress</strong> – light goals like “clear 2 backlog games this month,” with progress and small celebrations.</li>
+          </ul>
+          <p>
+            The UI follows a dark, game-like style so it feels at home next to platforms like Steam or
+            console dashboards, with more emphasis on progress than guilt.
+          </p>
+        </div>
+        <aside class="card">
+          <div class="mini-heading">Concept focus</div>
+          <div class="badge-row">
+            <span class="badge">Backlog Buddy</span>
+            <span class="badge">Suggest</span>
+            <span class="badge">Schedule</span>
+            <span class="badge">Social play</span>
+            <span class="badge">Challenges</span>
+          </div>
+          <p style="margin-top:10px;font-size:0.9rem;">
+            In the live demo I would scroll through wireframes of the dashboard, the “Play Next” card,
+            and the scheduling &amp; invite flows.
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- REFLECTION & NEXT -->
+    <section id="reflection">
+      <div class="section-label">06 · Reflection &amp; what’s next</div>
+      <h2 class="section-title">Emotional logic &amp; gentle UX</h2>
+      <div class="section-grid">
+        <div class="section-body">
+          <p>
+            This project reminded me that behavior which looks irrational from the outside often has very
+            clear <strong>emotional logic</strong>. Buying games and not playing them is tied to identity, social
+            belonging, FOMO, and the comfort of “maybe later,” not just laziness.
+          </p>
+          <p>
+            It also reinforced my belief that good UX should <strong>support people gently</strong> rather than
+            scold them. Backlog Buddy is designed around small wins, clearer choices, and support from
+            friends – not shame.
+          </p>
+          <p>
+            If I continue this project, the next step would be to test the concept with real players and see
+            if it changes how they interact with their backlog. I’m also curious about applying similar ideas
+            to other “buy but don’t use” spaces like online courses or books.
+          </p>
+        </div>
+        <aside class="card">
+          <div class="mini-heading">Where I’m headed</div>
+          <p>
+            I want to keep exploring motivation, emotion, and behavior change in everyday digital
+            experiences – especially around entertainment, learning, and wellbeing.
+          </p>
+          <p style="margin-top:8px;">
+            Thank you for your time. I’m happy to answer questions about the research, the concept,
+            or my process.
+          </p>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Johnny Ju · Game Backlog UX Case</span>
+    <span>Presented live using this portfolio page instead of slides</span>
+  </footer>
+</body>
+</html>
